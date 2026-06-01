@@ -20,6 +20,8 @@
 				<h1>VanHex News Hub Experiment #4</h1>
 				<a href="https://github.com/hexcamp/vanhex-newshub-4">Source on GitHub</a>
 				- <a href="https://6kg6rqiaaaaa.vanhex.ca/">Other Experiments</a>
+				<a href="/login">Login</a>
+				<a href="/post">Post</a>
 			</div>
 
 			<nav>
