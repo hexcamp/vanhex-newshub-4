@@ -6,8 +6,7 @@
     "grant_types": ["authorization_code", "refresh_token"],
     "response_types": ["code"],
     "scope": "atproto repo:app.bsky.feed.post?action=create repo:xyz.statusphere.status",
-    "token_endpoint_auth_method": "private_key_jwt",
-    "token_endpoint_auth_signing_alg": "ES256",
+    "token_endpoint_auth_method": "none",
     "client_name": "VanHex.ca News Hub Experiment #4",
     "client_uri": "https://6kg6ryiaaaaa.vanhex.ca"
 }
