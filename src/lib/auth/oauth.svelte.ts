@@ -25,6 +25,7 @@ let sessionState = $state(null);
 
 export async function setupOAuth() {
 	/* Set up the OAuth client */
+	console.log('Jim OAuth clientId', clientId);
 	try {
 		oac = await BrowserOAuthClient.load({
 			clientId, // Note: This involves fetching the metadata document. See https://github.com/bluesky-social/atproto/tree/main/packages/oauth/oauth-client-browser#client-metadata for how to avoid this extra round-trip.
@@ -62,7 +63,7 @@ export async function setupOAuth() {
 			hasSessionState = false;
 		}
 	} catch (error) {
-		const msg = `An error occured: ${error}`;
+		console.error(`An error occured: ${error}`);
 		// document.getElementById("loading-error").innerText = msg;
 		// document.getElementById("loading-error").style.display = "inherit"; // unhide
 	}
