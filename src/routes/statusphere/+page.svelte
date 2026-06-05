@@ -68,6 +68,8 @@
 		<p>Welcome, <code id="welcome-message">{handle()}</code></p>
 		<h3>Statusphere Post</h3>
 		<button onclick={makeDoPost('🤪')}>🤪</button>
+		<button onclick={makeDoPost('⚽️')}>⚽️</button>
+		<button onclick={makeDoPost('🇨🇦')}>🇨🇦</button>
 	</article>
 
 	<!-- hidden by default, will be shown if a post has been created -->
@@ -86,3 +88,13 @@
 	<p>You must be logged in to post.</p>
 	<p><a href="/login">Go to login page</a></p>
 {/if}
+
+<style>
+	button {
+		margin: 10px;
+		padding: 10px;
+		width: 70px;
+		height: 70px;
+		font-size: 50px;
+	}
+</style>
