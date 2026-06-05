@@ -22,6 +22,7 @@
 				- <a href="https://6kg6rqiaaaaa.vanhex.ca/">Other Experiments</a>
 				<a href="/login">Login</a>
 				<a href="/post">Post</a>
+				<a href="/statusphere">Statusphere</a>
 			</div>
 
 			<nav>

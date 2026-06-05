@@ -1,4 +1,4 @@
-import { BrowserOAuthClient } from '@atproto/oauth-client-browser';
+import { BrowserOAuthClient, OAuthSession } from '@atproto/oauth-client-browser';
 import { Agent } from '@atproto/api';
 
 function buildClientID() {
@@ -6,7 +6,7 @@ function buildClientID() {
 	if (isLocal) {
 		// see https://atproto.com/specs/oauth#localhost-client-development
 		return `http://localhost?${new URLSearchParams({
-			scope: 'atproto repo:app.bsky.feed.post?action=create',
+			scope: 'atproto repo:app.bsky.feed.post?action=create repo:xyz.statusphere.status',
 			redirect_uri: Object.assign(new URL(window.location.origin), {
 				hostname: '127.0.0.1',
 				pathname: '/login/',
@@ -21,6 +21,7 @@ export let oac: undefined | BrowserOAuthClient;
 export let agent: undefined | Agent; //   (gets assigned after successful auth)
 let hasSessionState = $state(false);
 let handleState = $state('');
+let sessionState = $state(null);
 
 export async function setupOAuth() {
 	/* Set up the OAuth client */
@@ -38,6 +39,8 @@ export async function setupOAuth() {
 			} else {
 				console.log(`${session.sub} was restored (last active session)`);
 			}
+
+			sessionState = session;
 
 			agent = new Agent(session);
 
@@ -69,7 +72,11 @@ export function hasSession(): boolean {
 	return hasSessionState;
 }
 
-export function handle(): boolean {
+export function getSession(): OAuthSession | null {
+	return sessionState;
+}
+
+export function handle(): string {
 	return handleState;
 }
 
