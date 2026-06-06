@@ -1,5 +1,8 @@
 <script lang="ts">
-	import type { AppBskyFeedPost } from '@atcute/bluesky';
+	import type { AppBskyFeedDefs, AppBskyFeedPost } from '@atcute/bluesky';
+	import { hasSession, getSession, agent } from '$lib/auth/oauth.svelte';
+	import { Client, type DatetimeString } from '@atproto/lex';
+	import * as app from '../../../lexicons/app';
 
 	import { base } from '$app/paths';
 
@@ -37,6 +40,43 @@
 
 	const isAviBlurred = $derived(!!findLabel(author.labels, author.did, FlagsBlurMedia));
 	const blur = $derived(findLabel(post.labels, author.did, FlagsBlurContent));
+
+	function makeLikePost(post: AppBskyFeedDefs.PostView) {
+		return async function doLike(e) {
+			console.log('Jim1');
+			if (!agent) {
+				console.log('Jim2');
+				return;
+			}
+			e.preventDefault();
+
+			const oauthSession = getSession();
+
+			const lexClient = new Client(oauthSession);
+
+			const uri = post.uri;
+			const cid = post.cid;
+
+			const createdAt = new Date().toISOString() as DatetimeString;
+
+			try {
+				const res = await lexClient.create(app.bsky.feed.like, {
+					subject: { uri, cid },
+					createdAt,
+				});
+
+				console.log('Jim4');
+				if (!res.success) {
+					throw new Error(JSON.stringify(res));
+				}
+			} catch (err) {
+				console.log('Jim5');
+				// document.getElementById('post-form-error').innerText = `${err}`;
+				// postButton.removeAttribute('aria-busy');
+				return;
+			}
+		};
+	}
 </script>
 
 <div class={['post-feed-item', !item.next && `is-leaf`]}>
@@ -63,6 +103,11 @@
 			<Avatar profile={author} tabindex={-1} href={authorUrl} blur={isAviBlurred} />
 			<PostMeta {post} {postUrl} {authorUrl} gutterBottom />
 		</div>
+		{#if hasSession()}
+			<div>
+				<button onclick={makeLikePost(post)}>Bsky Like</button>
+			</div>
+		{/if}
 	</div>
 </div>
 

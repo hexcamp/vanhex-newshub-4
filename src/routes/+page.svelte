@@ -1,4 +1,8 @@
 <script lang="ts">
+	import { setupOAuth, hasSession, getSession, agent, handle } from '$lib/auth/oauth.svelte';
+
+	setupOAuth();
+
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
 	import { PUBLIC_APP_NAME } from '$env/static/public';

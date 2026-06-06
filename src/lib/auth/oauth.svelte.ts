@@ -6,7 +6,8 @@ function buildClientID() {
 	if (isLocal) {
 		// see https://atproto.com/specs/oauth#localhost-client-development
 		return `http://localhost?${new URLSearchParams({
-			scope: 'atproto repo:app.bsky.feed.post?action=create repo:xyz.statusphere.status',
+			scope:
+				'atproto repo:app.bsky.feed.post?action=create repo:xyz.statusphere.status repo:app.bsky.feed.like',
 			redirect_uri: Object.assign(new URL(window.location.origin), {
 				hostname: '127.0.0.1',
 				pathname: '/login/',

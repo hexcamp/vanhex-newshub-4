@@ -61,3 +61,9 @@
 		<p id="login-form-error" style="color: #E37474;"></p>
 	</article>
 {/if}
+
+<style>
+	input {
+		width: 80%;
+	}
+</style>
