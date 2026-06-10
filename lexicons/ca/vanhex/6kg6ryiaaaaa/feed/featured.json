@@ -1,0 +1,30 @@
+{
+	"id": "ca.vanhex.6kg6ryiaaaaa.feed.featured",
+	"defs": {
+		"main": {
+			"key": "tid",
+			"type": "record",
+			"record": {
+				"type": "object",
+				"required": ["subject", "createdAt"],
+				"properties": {
+					"via": {
+						"ref": "com.atproto.repo.strongRef",
+						"type": "ref"
+					},
+					"subject": {
+						"ref": "com.atproto.repo.strongRef",
+						"type": "ref"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "datetime"
+					}
+				}
+			},
+			"description": "Record linking to a piece of subject content to feature."
+		}
+	},
+	"$type": "com.atproto.lexicon.schema",
+	"lexicon": 1
+}

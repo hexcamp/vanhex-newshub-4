@@ -1,8 +1,4 @@
 <script lang="ts">
-	import { setupOAuth, hasSession, getSession, agent, handle } from '$lib/auth/oauth.svelte';
-
-	setupOAuth();
-
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
 	import { PUBLIC_APP_NAME } from '$env/static/public';
@@ -16,38 +12,11 @@
 	import PostFeedItemNoImage from '$lib/components/timeline/post-feed-item-no-image.svelte';
 	import PostFeedItemWithImage from '$lib/components/timeline/post-feed-item-with-image.svelte';
 
-	import FeedMetaTags from './components/feed-meta-tags.svelte';
+	import FeedMetaTags from '../components/feed-meta-tags.svelte';
 
 	const { data }: PageProps = $props();
 
-	let dedupe = $state(true);
-
-	const rkey = $derived(assertCanonicalResourceUri(data.feed.uri).rkey);
-
-	let filteredTimeline = $derived({
-		...data.timeline,
-		items: (() => {
-			const seen = new Set();
-			return data.timeline.items.filter((item) => {
-				let text = <string>item.post.record?.text;
-				text = text.replace(/\btheprovince.com\S+\b/, '');
-				text = text.replace(/\bvancouversun.com\S+\b/, '');
-				if (dedupe && seen.has(text)) {
-					return false;
-				}
-				const embed = <Record<string, object>>item.post.record?.embed;
-				const external = <Record<string, string>>embed?.external;
-				if (dedupe && seen.has(external?.title)) {
-					return false;
-				}
-				seen.add(text);
-				if (external?.title) {
-					seen.add(external?.title);
-				}
-				return true;
-			});
-		})(),
-	});
+	const filteredTimeline = $derived(data);
 
 	(() => {
 		// console.log('Jim Original Timeline', data.timeline);
@@ -55,8 +24,6 @@
 			console.log('Jim Item', i, filteredTimeline.items[i].post.record);
 		}
 	})();
-
-	const { rootUrl, nextUrl } = $derived(paginate(page.url, filteredTimeline.cursor, base));
 </script>
 
 <svelte:head>
@@ -67,67 +34,58 @@
 
 <FeedMetaTags feed={data.feed} />
 
-<PageListing subject="timeline" {rootUrl} {nextUrl}>
-	<section class="grid-section">
-		<div class="grid1">
-			<div class="grid1-1">
-				{#if filteredTimeline.items[0]}
-					<PostFeedItemSplash item={filteredTimeline.items[0]} />
-				{/if}
-			</div>
-			<div class="grid1-2">
-				<div class="subgrid1-2">
-					<div class="subgrid1-2-1">
-						{#if filteredTimeline.items[1]}
-							<PostFeedItemWithImage item={filteredTimeline.items[1]} />
-						{/if}
-					</div>
-					<div class="subgrid1-2-2">
-						{#if filteredTimeline.items[2]}
-							<PostFeedItemWithImage item={filteredTimeline.items[2]} />
-						{/if}
-					</div>
-					<div class="subgrid1-2-3">
-						{#if filteredTimeline.items[3]}
-							<PostFeedItemWithImage item={filteredTimeline.items[3]} />
-						{/if}
-					</div>
+<section class="grid-section">
+	<div class="grid1">
+		<div class="grid1-1">
+			{#if filteredTimeline.items[0]}
+				<PostFeedItemSplash item={filteredTimeline.items[0]} />
+			{/if}
+		</div>
+		<div class="grid1-2">
+			<div class="subgrid1-2">
+				<div class="subgrid1-2-1">
+					{#if filteredTimeline.items[1]}
+						<PostFeedItemWithImage item={filteredTimeline.items[1]} />
+					{/if}
 				</div>
-			</div>
-			<div class="grid1-3">
-				<div class="subgrid1-3">
-					<div class="subgrid1-3-1">
-						{#if filteredTimeline.items[4]}
-							<PostFeedItemWithImage item={filteredTimeline.items[4]} />
-						{/if}
-					</div>
-					<div class="subgrid1-3-2">
-						{#if filteredTimeline.items[5]}
-							<PostFeedItemWithImage item={filteredTimeline.items[5]} />
-						{/if}
-					</div>
-					<div class="subgrid1-3-3">
-						{#if filteredTimeline.items[6]}
-							<PostFeedItemWithImage item={filteredTimeline.items[6]} />
-						{/if}
-					</div>
-					<div class="subgrid1-3-4">
-						{#if filteredTimeline.items[7]}
-							<PostFeedItemWithImage item={filteredTimeline.items[7]} />
-						{/if}
-					</div>
+				<div class="subgrid1-2-2">
+					{#if filteredTimeline.items[2]}
+						<PostFeedItemWithImage item={filteredTimeline.items[2]} />
+					{/if}
+				</div>
+				<div class="subgrid1-2-3">
+					{#if filteredTimeline.items[3]}
+						<PostFeedItemWithImage item={filteredTimeline.items[3]} />
+					{/if}
 				</div>
 			</div>
 		</div>
-	</section>
-	<section class="flexbox-section">
-		{#each { length: filteredTimeline.items.length - 8 } as _, i}
-			<div>
-				<PostFeedItemWithImage item={filteredTimeline.items[i + 8]} />
+		<div class="grid1-3">
+			<div class="subgrid1-3">
+				<div class="subgrid1-3-1">
+					{#if filteredTimeline.items[4]}
+						<PostFeedItemWithImage item={filteredTimeline.items[4]} />
+					{/if}
+				</div>
+				<div class="subgrid1-3-2">
+					{#if filteredTimeline.items[5]}
+						<PostFeedItemWithImage item={filteredTimeline.items[5]} />
+					{/if}
+				</div>
+				<div class="subgrid1-3-3">
+					{#if filteredTimeline.items[6]}
+						<PostFeedItemWithImage item={filteredTimeline.items[6]} />
+					{/if}
+				</div>
+				<div class="subgrid1-3-4">
+					{#if filteredTimeline.items[7]}
+						<PostFeedItemWithImage item={filteredTimeline.items[7]} />
+					{/if}
+				</div>
 			</div>
-		{/each}
-	</section>
-</PageListing>
+		</div>
+	</div>
+</section>
 
 <style>
 	.grid-section {

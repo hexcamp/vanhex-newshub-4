@@ -28,6 +28,7 @@
 			<nav>
 				Sections:
 				<a href="/" aria-current={page.url.pathname === '/'}>Home</a>
+				<a href="/featured" aria-current={page.url.pathname === '/featured/'}>Featured</a>
 				<a href="/politics" aria-current={page.url.pathname === '/politics/'}>Politics</a>
 				<a href="/crime" aria-current={page.url.pathname === '/crime/'}>Crime</a>
 				<a href="/sports" aria-current={page.url.pathname === '/sports/'}>Sports</a>

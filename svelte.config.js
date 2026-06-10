@@ -8,6 +8,9 @@ const config = {
 	preprocess: vitePreprocess(),
 	compilerOptions: {
 		runes: true,
+		experimental: {
+			async: true,
+		},
 	},
 
 	kit: {
