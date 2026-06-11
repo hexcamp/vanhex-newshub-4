@@ -47,13 +47,15 @@ export const load: PageLoad = async ({ url, params, fetch, parent }) => {
 	});
 	*/
 
-	const uris = records.map(
-		({
-			record: {
-				subject: { uri },
-			},
-		}) => uri,
-	);
+	const uris = records
+		.map(
+			({
+				record: {
+					subject: { uri },
+				},
+			}) => uri,
+		)
+		.slice(0, 20);
 	console.log('Jim uris', uris);
 
 	const posts = await getPosts({ client, uris });
