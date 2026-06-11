@@ -86,6 +86,13 @@
 		</div>
 	</div>
 </section>
+<section class="flexbox-section">
+	{#each { length: filteredTimeline.items.length - 8 } as _, i}
+		<div>
+			<PostFeedItemWithImage item={filteredTimeline.items[i + 8]} />
+		</div>
+	{/each}
+</section>
 
 <style>
 	.grid-section {
