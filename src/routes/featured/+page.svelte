@@ -16,7 +16,15 @@
 
 	const { data }: PageProps = $props();
 
-	const filteredTimeline = $derived(data);
+	const filteredTimeline = $derived({
+		...data,
+		items: data.items.sort((a, b) => {
+			const aCreatedAt = Temporal.Instant.from(a.post.record.createdAt);
+			const bCreatedAt = Temporal.Instant.from(b.post.record.createdAt);
+
+			return bCreatedAt.epochMilliseconds - aCreatedAt.epochMilliseconds;
+		}),
+	});
 
 	(() => {
 		// console.log('Jim Original Timeline', data.timeline);
