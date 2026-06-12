@@ -19,10 +19,10 @@
 	const filteredTimeline = $derived({
 		...data,
 		items: data.items.sort((a, b) => {
-			const aCreatedAt = Temporal.Instant.from(a.post.record.createdAt);
-			const bCreatedAt = Temporal.Instant.from(b.post.record.createdAt);
+			const aCreatedAt = new Date(a.post.record.createdAt).valueOf();
+			const bCreatedAt = new Date(b.post.record.createdAt).valueOf();
 
-			return bCreatedAt.epochMilliseconds - aCreatedAt.epochMilliseconds;
+			return bCreatedAt - aCreatedAt;
 		}),
 	});
 
