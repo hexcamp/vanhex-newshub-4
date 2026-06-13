@@ -1,9 +1,6 @@
 <script lang="ts">
-	import type { AppBskyFeedDefs, AppBskyFeedPost } from '@atcute/bluesky';
-	import { hasSession, getSession, agent } from '$lib/auth/oauth.svelte';
-	import { Client, type DatetimeString } from '@atproto/lex';
-	import * as app from '../../../lexicons/app';
-	import * as ca from '../../../lexicons/ca';
+	import type { AppBskyFeedPost } from '@atcute/bluesky';
+	import { hasSession } from '$lib/auth/oauth.svelte';
 
 	import { base } from '$app/paths';
 
@@ -23,6 +20,8 @@
 	import PostMeta from './post-meta.svelte';
 	import PostMetrics from './post-metrics.svelte';
 
+	import { makeFeaturedPost } from '$lib/featured';
+
 	interface Props {
 		item: UiTimelineItem;
 	}
@@ -41,80 +40,6 @@
 
 	const isAviBlurred = $derived(!!findLabel(author.labels, author.did, FlagsBlurMedia));
 	const blur = $derived(findLabel(post.labels, author.did, FlagsBlurContent));
-
-	function makeLikePost(post: AppBskyFeedDefs.PostView) {
-		return async function doLike(e) {
-			console.log('Jim1');
-			if (!agent) {
-				console.log('Jim2');
-				return;
-			}
-			e.preventDefault();
-
-			const oauthSession = getSession();
-
-			const lexClient = new Client(oauthSession);
-
-			const uri = post.uri;
-			const cid = post.cid;
-
-			const createdAt = new Date().toISOString() as DatetimeString;
-
-			try {
-				const res = await lexClient.create(app.bsky.feed.like, {
-					subject: { uri, cid },
-					createdAt,
-				});
-
-				console.log('Jim4');
-				if (!res.success) {
-					throw new Error(JSON.stringify(res));
-				}
-			} catch (err) {
-				console.log('Jim5');
-				// document.getElementById('post-form-error').innerText = `${err}`;
-				// postButton.removeAttribute('aria-busy');
-				return;
-			}
-		};
-	}
-
-	function makeFeaturedPost(post: AppBskyFeedDefs.PostView) {
-		return async function doLike(e) {
-			console.log('Jim1');
-			if (!agent) {
-				console.log('Jim2');
-				return;
-			}
-			e.preventDefault();
-
-			const oauthSession = getSession();
-
-			const lexClient = new Client(oauthSession);
-
-			const uri = post.uri;
-			const cid = post.cid;
-
-			const createdAt = new Date().toISOString() as DatetimeString;
-
-			try {
-				const res = await lexClient.create(ca.vanhex['6kg6ryiaaaaa'].feed.featured, {
-					subject: { uri, cid },
-					createdAt,
-				});
-
-				console.log('Jim4');
-				if (!res.success) {
-					throw new Error(JSON.stringify(res));
-				}
-			} catch (err) {
-				console.log('Jim5');
-				// document.getElementById('post-form-error').innerText = `${err}`;
-				// postButton.removeAttribute('aria-busy');
-				return;
-			}
-		};
-	}
 </script>
 
 <div class={['post-feed-item', !item.next && `is-leaf`]}>
@@ -143,7 +68,6 @@
 		</div>
 		{#if hasSession()}
 			<div>
-				<button onclick={makeLikePost(post)}>Bsky Like</button>
 				<button onclick={makeFeaturedPost(post)}>Featured</button>
 			</div>
 		{/if}

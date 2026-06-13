@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { AppBskyFeedPost } from '@atcute/bluesky';
+	import { hasSession, getSession, agent } from '$lib/auth/oauth.svelte';
 
 	import { base } from '$app/paths';
 
@@ -18,6 +19,8 @@
 	import ContentHider from '../content-hider.svelte';
 	import PostMeta from './post-meta.svelte';
 	import PostMetrics from './post-metrics.svelte';
+
+	import { makeFeaturedPost } from '$lib/featured';
 
 	interface Props {
 		item: UiTimelineItem;
@@ -108,6 +111,11 @@
 				<Avatar profile={author} tabindex={-1} href={authorUrl} blur={isAviBlurred} />
 				<PostMeta {post} {postUrl} {authorUrl} gutterBottom />
 			</div>
+			{#if hasSession()}
+				<div>
+					<button onclick={makeFeaturedPost(post)}>Featured</button>
+				</div>
+			{/if}
 		</div>
 	</div>
 </div>
