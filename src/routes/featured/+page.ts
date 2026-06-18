@@ -55,16 +55,11 @@ export const load: PageLoad = async ({ url, params, fetch, parent }) => {
 				},
 			}) => uri,
 		)
-		.slice(0, 20);
-	console.log('Jim uris', uris);
+		.slice(0, 40);
 
 	const posts = await getPosts({ client, uris });
 
-	console.log('Jim posts', posts);
-
 	const items = posts.posts.posts.map((post) => ({ post }));
-
-	console.log('Jim items', items);
 
 	return { items };
 };
